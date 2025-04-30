@@ -24,13 +24,16 @@ if __name__ == '__main__' :
         feats_n = feats / norm2
         sim = feats_n @ np.transpose(feats_n)
         sim_idx = np.argsort(-sim, axis = 1)
+        #sime_idx = np.argsort(sim,axis=1)
         
         #---- An example of results just pickin a random query
         # the first image appearing must be the same as the query
         query = np.random.permutation(sim.shape[0])[0]
         k = 10
         best_idx = sim_idx[query, :k+1]
+        #worst_idx = sime_idx[query, :k+1]
         print(sim[query, best_idx])
+        #print(sim[query,worst_idx])
 
         fig, ax = plt.subplots(1,11)
         w = 0
@@ -47,7 +50,8 @@ if __name__ == '__main__' :
                 val_list.append(1)
             else:
                 val_list.append(0)
-        #print(val_list)
+        print(sim[query,best_idx][1:])
+        print(val_list)
         cos=torch.nn.CosineSimilarity(dim=1, eps=1e-8)
         print(cos(torch.tensor(np.array(val_list[1:])),torch.tensor(np.array([sim[query,best_idx][1:]]))))
                 
