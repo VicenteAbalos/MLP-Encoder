@@ -34,19 +34,23 @@ if __name__ == '__main__' :
 
         fig, ax = plt.subplots(1,11)
         w = 0
+        val_list=[]
         for i, idx in enumerate(best_idx):        
+            #print("i:",i,"idx:",idx)
             filename = os.path.join(image_dir, files[idx][0])
             im = io.imread(filename)
             im = transform.resize(im, (64,64)) 
             ax[i].imshow(im)                 
             ax[i].set_axis_off()
             ax[i].set_title(files[idx][1])
+            if files[idx][1]==files[query][1]:
+                val_list.append(1)
+            else:
+                val_list.append(0)
+        #print(val_list)
+        cos=torch.nn.CosineSimilarity(dim=1, eps=1e-8)
+        print(cos(torch.tensor(np.array(val_list[1:])),torch.tensor(np.array([sim[query,best_idx][1:]]))))
                 
         ax[0].patch.set(lw=6, ec='b')
         ax[0].set_axis_on()            
         plt.show()
-        ll.append(sim[query,best_idx])
-    print(torch.tensor(ll[0]))
-    print(torch.tensor(ll[1]))
-    cos=torch.nn.CosineSimilarity(dim=1, eps=1e-8)
-    print(cos(torch.tensor(np.array([ll[0]])),torch.tensor(np.array([ll[1]]))))
