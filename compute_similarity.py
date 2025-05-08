@@ -22,10 +22,8 @@ if __name__ == '__main__' :
         feats = np.load(feat_file)    
         norm2 = np.linalg.norm(feats, ord = 2, axis = 1,  keepdims = True)
         feats_n = feats / norm2
-        cosim = torch.nn.CosineSimilarity(dim= 1)
         sim = feats_n @ np.transpose(feats_n)
         sim_idx = np.argsort(-sim, axis = 1)
-        print(len(sim),len(cosim(torch.tensor(feats),torch.tensor(feats_n))))
         #sime_idx = np.argsort(sim,axis=1)
         
         #---- An example of results just pickin a random query
@@ -54,9 +52,7 @@ if __name__ == '__main__' :
                 val_list.append(0)
         print(sim[query,best_idx][1:])
         print(val_list)
-        cos=torch.nn.CosineSimilarity(dim=1, eps=1e-8)
-        print(cos(torch.tensor(np.array(val_list[1:])),torch.tensor(np.array([sim[query,best_idx][1:]]))))
-                
+        
         ax[0].patch.set(lw=6, ec='b')
         ax[0].set_axis_on()            
         plt.show()
