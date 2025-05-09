@@ -107,34 +107,52 @@ if __name__ == '__main__' :
         best_list.sort()
         best_five=best_list[-5:]
         worst_five=best_list[:5]
+        print("best list:",AP_list.index(best_list[-100]))
 
         index=AP_list.index(best_five[0])
+        iter_best=0
+        index_best=[]
+        while len(index_best)<5:
+            for val in AP_list:
+                if val==best_five[iter_best] and AP_list.index(val) not in index_best:
+                    print("yay")
+                    index_best.append(AP_list.index(val))
+                    iter_best+=1
+                    break
+                elif val==best_five[iter_best]:
+                    index_best.append(AP_list.index(val)+iter_best)
+                    iter_best+=1
+                    break
+        print("WE DID IT:",index_best)
+
         the_best_idx = sim_idx[index, :k+1]
-        print("The best case:",sim[index, the_best_idx])
-        print("best_idx",the_best_idx)
         index2=AP_list.index(worst_five[4])
         the_worst_idx = sim_idx[index2, :k+1]
-        print("The worst case:",sim[index, the_worst_idx])
 
-        fig, ax = plt.subplots(1,11)
+        fig, ax = plt.subplots(5,11)
         w = 0
         #val_list=[]
-        for i, idx in enumerate(the_worst_idx):        
-            #print("i:",i,"idx:",idx)
-            filename = os.path.join(image_dir, files[idx][0])
-            im = io.imread(filename)
-            im = transform.resize(im, (64,64)) 
-            ax[i].imshow(im)                 
-            ax[i].set_axis_off()
-            ax[i].set_title(files[idx][1])
-            """if files[idx][1]==files[query][1]:
-                val_list.append(1)
-            else:
-                val_list.append(0)"""
-        #print(sim[query,best_idx][1:])
-        #print(val_list)
-        #print(pr1(val_list))
+        for j in range(len(best_five)):
+            #index=AP_list.index(best_five[j])
+            index=index_best[j]
+            #print(index)
+            the_best_idx=sim_idx[index,:11]
+            for i, idx in enumerate(the_best_idx):        
+                #print("i:",i,"idx:",idx)
+                filename = os.path.join(image_dir, files[idx][0])
+                im = io.imread(filename)
+                im = transform.resize(im, (64,64)) 
+                ax[j,i].imshow(im)                 
+                ax[j,i].set_axis_off()
+                ax[j,i].set_title(files[idx][1])
+                """if files[idx][1]==files[query][1]:
+                    val_list.append(1)
+                else:
+                    val_list.append(0)"""
+            #print(sim[query,best_idx][1:])
+            #print(val_list)
+            #print(pr1(val_list))
         
-        ax[0].patch.set(lw=6, ec='b')
-        ax[0].set_axis_on()            
+        ax[0,0].patch.set(lw=6, ec='b')
+        ax[0,0].set_axis_on()            
         plt.show()
