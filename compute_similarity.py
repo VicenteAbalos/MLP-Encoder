@@ -14,15 +14,40 @@ val_file = os.path.join(data_dir, 'list_of_images.txt')
 #funcion del precision
 def pr1(idx):
     p=0
+    list_p=[]
     correct_c=0
     for i in range(1,len(idx)):
         if idx[i]==1:
             correct_c+=1
             p+=correct_c/i
+            list_p.append(correct_c/i)
         #print(idx[i],correct_c,p)
     if correct_c>0:
         p=p/correct_c
-    return p
+    return p, list_p
+#
+#Recall maker: returned dictionary must be saved in another dictionary
+def recall_vect(l_p):
+    recall={}
+    total=len(l_p)
+    currentp=0
+    i=0
+    while i<11:
+        if i/10<=(currentp+1)/total:
+            recall[i/10]=l_p[currentp]
+            i+=1
+        else:
+            currentp+=1
+    return recall
+#
+#Recall avg
+def mean_recall(recall):
+    vector=[0,0,0,0,0,0,0,0,0,0,0] #recall vector where I'll put every average
+    for position in range(11):
+        for row in recall.keys():
+            vector[position]+=recall[row][position/10] #this should add all values of the same position to the corresponding vector value
+        vector[position]=vector[position]/len(recall) #this should bring the value down to its average
+    return vector
 #
 
 DATASET = 'simple1k'
@@ -57,6 +82,7 @@ if __name__ == '__main__' :
 
         mAP=0
         AP_list=[]
+        R_dict={}
         for j, row in enumerate(sim_idx):
             val_list=[]
             for i, idx in enumerate(row):        
@@ -67,11 +93,13 @@ if __name__ == '__main__' :
                 else:
                     val_list.append(0)
             #print("Val:",val_list)
-            avg_precision=pr1(val_list)
+            avg_precision,precision_list=pr1(val_list)
+            R_dict[j]=recall_vect(precision_list) ###This should save the recall vector in a dictionary with an idx key
             AP_list.append(avg_precision)
             mAP+=avg_precision
         mAP=mAP/len(AP_list)
         print(mAP)
+        recall_avg=mean_recall(R_dict) ###This should return the average vector of recalls
 
         """mAP=0
         for row in sim:
@@ -101,7 +129,7 @@ if __name__ == '__main__' :
                 val_list.append(0)
         print(sim[query,best_idx][1:])
         print(val_list)
-        print(pr1(val_list))
+        #print(pr1(val_list))
         
         ax[0].patch.set(lw=6, ec='b')
         ax[0].set_axis_on()            
