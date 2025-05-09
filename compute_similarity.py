@@ -27,6 +27,10 @@ def pr1(idx):
 
 DATASET = 'simple1k'
 MODEL = 'resnet34'
+MODEL2 = 'resnet18'
+DINOV2 = 'dinov2'
+CLIP = 'clip'
+
 feat_file = os.path.join('data', 'feat_{}_{}.npy'.format(MODEL, DATASET))
 if __name__ == '__main__' :
     ll=[]
