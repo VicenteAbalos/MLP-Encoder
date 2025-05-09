@@ -99,7 +99,9 @@ if __name__ == '__main__' :
             mAP+=avg_precision
         mAP=mAP/len(AP_list)
         print(mAP)
+        #print("recall dict:",R_dict)
         recall_avg=mean_recall(R_dict) ###This should return the average vector of recalls
+        #print("avg recall:",recall_avg)
 
         """mAP=0
         for row in sim:
