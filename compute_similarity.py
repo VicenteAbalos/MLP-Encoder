@@ -103,21 +103,23 @@ if __name__ == '__main__' :
         recall_avg=mean_recall(R_dict) ###This should return the average vector of recalls
         #print("avg recall:",recall_avg)
 
-        """mAP=0
-        for row in sim:
-            ap=-1
-            for i in row:
-                ap+=i
-            ap=ap/(len(row)-1)
-            #print("Avg Precision:",ap)
-            mAP+=ap
-        mAP=mAP/len(sim)
-        print("mAP:",mAP)"""
+        best_list=AP_list.copy()
+        best_list.sort()
+        best_five=best_list[-5:]
+        worst_five=best_list[:5]
+
+        index=AP_list.index(best_five[0])
+        the_best_idx = sim_idx[index, :k+1]
+        print("The best case:",sim[index, the_best_idx])
+        print("best_idx",the_best_idx)
+        index2=AP_list.index(worst_five[4])
+        the_worst_idx = sim_idx[index2, :k+1]
+        print("The worst case:",sim[index, the_worst_idx])
 
         fig, ax = plt.subplots(1,11)
         w = 0
-        val_list=[]
-        for i, idx in enumerate(best_idx):        
+        #val_list=[]
+        for i, idx in enumerate(the_worst_idx):        
             #print("i:",i,"idx:",idx)
             filename = os.path.join(image_dir, files[idx][0])
             im = io.imread(filename)
@@ -125,12 +127,12 @@ if __name__ == '__main__' :
             ax[i].imshow(im)                 
             ax[i].set_axis_off()
             ax[i].set_title(files[idx][1])
-            if files[idx][1]==files[query][1]:
+            """if files[idx][1]==files[query][1]:
                 val_list.append(1)
             else:
-                val_list.append(0)
-        print(sim[query,best_idx][1:])
-        print(val_list)
+                val_list.append(0)"""
+        #print(sim[query,best_idx][1:])
+        #print(val_list)
         #print(pr1(val_list))
         
         ax[0].patch.set(lw=6, ec='b')
