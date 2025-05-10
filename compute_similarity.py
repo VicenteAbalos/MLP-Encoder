@@ -27,6 +27,11 @@ def pr1(idx):
     return p, list_p
 #
 #Recall maker: returned dictionary must be saved in another dictionary
+def print_recall(dict):
+    for i in dict.keys():
+        print(f"mAP {i}", dict[i]["mAP"])
+        #print("recall", dict[i]["RA"])
+
 def recall_vect(l_p):
     recall={}
     total=len(l_p)
@@ -51,10 +56,10 @@ def mean_recall(recall):
 #
 
 DATASETS = ['simple1k']
-MODELS = ['resnet34', 'dinov2', 'clip']
-recall_for_model={}
+MODELS = ['resnet34', 'resnet18', 'dinov2', 'clip']
 
 for DATASET in DATASETS:
+    recall_for_model={}
     for MODEL in MODELS:
         feat_file = os.path.join('data', 'feat_{}_{}.npy'.format(MODEL, DATASET))
         if __name__ == '__main__' :
@@ -74,9 +79,9 @@ for DATASET in DATASETS:
             k = 10
             best_idx = sim_idx[query, :k+1]
             #worst_idx = sime_idx[query, :k+1]
-            print(sim_idx[query])
-            print(sim[query, best_idx])
-            print("row 1:",sim[0])
+            #print(sim_idx[query])
+            #print(sim[query, best_idx])
+            #print("row 1:",sim[0])
 
             mAP=0
             AP_list=[]
@@ -96,7 +101,7 @@ for DATASET in DATASETS:
                 AP_list.append(avg_precision)
                 mAP+=avg_precision
             mAP=mAP/len(AP_list)
-            print(mAP)
+            #print(mAP)
             #print("recall dict:",R_dict)
             recall_avg=mean_recall(R_dict) ###This should return the average vector of recalls
             #print("avg recall:",recall_avg)
@@ -106,7 +111,7 @@ for DATASET in DATASETS:
             best_=best_list.copy()
             best_.reverse()
             worst_=best_list.copy()
-            print("best list:",AP_list.index(best_list[-100]))
+            #print("best list:",AP_list.index(best_list[-100]))
 
             #index=AP_list.index(best_[0])
             iter_best=0
@@ -117,7 +122,7 @@ for DATASET in DATASETS:
                     #print(iter_best)
                     if AP_list[val_idx]==best_[iter_best]:
                         if val_idx not in index_best and files[val_idx][1] not in class_best:
-                            print("yay")
+                            #print("yay")
                             index_best.append(val_idx)
                             class_best.append(files[val_idx][1])
                             break
@@ -126,7 +131,7 @@ for DATASET in DATASETS:
                         index_best.append(AP_list.index(val)+iter_best)
                         iter_best+=1
                         break"""
-            print("WE DID IT:",index_best)
+            #print("WE DID IT:",index_best)
 
             #the_best_idx = sim_idx[index, :k+1]
             #index2=AP_list.index(worst_five[4])
@@ -138,13 +143,13 @@ for DATASET in DATASETS:
                     #print(iter_best)
                     if AP_list[val_idx]==worst_[iter_worst]:
                         if val_idx not in index_worst and files[val_idx][1] not in class_worst:
-                            print("yay")
+                            #print("yay")
                             index_worst.append(val_idx)
                             class_worst.append(files[val_idx][1])
                             break
                         iter_worst+=1
             #the_worst_idx = sim_idx[index2, :k+1]
-
+            
             fig, ax = plt.subplots(5,11)
             w = 0
             #val_list=[]
@@ -173,4 +178,4 @@ for DATASET in DATASETS:
             ax[0,0].set_axis_on()            
             plt.show()
             recall_for_model[f"{DATASET}_{MODEL}"]={"RA": recall_avg, "mAP": mAP}
-print(recall_for_model)
+    print_recall(recall_for_model)
