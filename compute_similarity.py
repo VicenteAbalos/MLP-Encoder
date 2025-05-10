@@ -149,33 +149,34 @@ for DATASET in DATASETS:
                             break
                         iter_worst+=1
             #the_worst_idx = sim_idx[index2, :k+1]
-            
-            fig, ax = plt.subplots(5,11)
-            w = 0
-            #val_list=[]
-            for j in range(5):
-                #index=AP_list.index(best_five[j])
-                index=index_worst[j]
-                #print(index)
-                the_best_idx=sim_idx[index,:11]
-                for i, idx in enumerate(the_best_idx):        
-                    #print("i:",i,"idx:",idx)
-                    filename = os.path.join(image_dir, files[idx][0])
-                    im = io.imread(filename)
-                    im = transform.resize(im, (64,64)) 
-                    ax[j,i].imshow(im)                 
-                    ax[j,i].set_axis_off()
-                    ax[j,i].set_title(files[idx][1])
-                    """if files[idx][1]==files[query][1]:
-                        val_list.append(1)
-                    else:
-                        val_list.append(0)"""
-                #print(sim[query,best_idx][1:])
-                #print(val_list)
-                #print(pr1(val_list))
-            
-            ax[0,0].patch.set(lw=6, ec='b')
-            ax[0,0].set_axis_on()            
-            plt.show()
+            ll_index=[index_best,index_worst]
+            for indx in ll_index:
+                fig, ax = plt.subplots(5,11)
+                w = 0
+                #val_list=[]
+                for j in range(5):
+                    #index=AP_list.index(best_five[j])
+                    index=indx[j]
+                    #print(index)
+                    the_idx=sim_idx[index,:11]
+                    for i, idx in enumerate(the_idx):        
+                        #print("i:",i,"idx:",idx)
+                        filename = os.path.join(image_dir, files[idx][0])
+                        im = io.imread(filename)
+                        im = transform.resize(im, (64,64)) 
+                        ax[j,i].imshow(im)                 
+                        ax[j,i].set_axis_off()
+                        ax[j,i].set_title(files[idx][1])
+                        """if files[idx][1]==files[query][1]:
+                            val_list.append(1)
+                        else:
+                            val_list.append(0)"""
+                    #print(sim[query,best_idx][1:])
+                    #print(val_list)
+                    #print(pr1(val_list))
+                
+                ax[0,0].patch.set(lw=6, ec='b')
+                ax[0,0].set_axis_on()            
+                plt.show()
             recall_for_model[f"{DATASET}_{MODEL}"]={"RA": recall_avg, "mAP": mAP}
     print_recall(recall_for_model)
