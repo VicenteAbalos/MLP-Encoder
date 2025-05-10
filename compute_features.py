@@ -12,7 +12,7 @@ import os
 # image_dir = os.path.join(data_dir, 'paris')
 # val_file = 'data/val_paris.txt'
 DATASET = 'simple1k'
-MODEL = 'resnet34'
+MODEL = 'dinov2'
 data_dir = 'simple1K/simple1K/'
 image_dir = os.path.join(data_dir, 'images')
 list_of_images = os.path.join(data_dir, 'list_of_images.txt')
@@ -50,6 +50,8 @@ if __name__ == '__main__':
         model = torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14').to(device)
 
     dim = 512
+    if MODEL=="dinov2":
+        dim=384
     #Pasamos la imagen por el modelo
     with torch.no_grad():        
         n_images = len(files)
