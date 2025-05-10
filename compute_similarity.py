@@ -56,6 +56,8 @@ MODEL2 = 'resnet18'
 DINOV2 = 'dinov2'
 CLIP = 'clip'
 
+recall_for_model={}
+
 feat_file = os.path.join('data', 'feat_{}_{}.npy'.format(MODEL, DATASET))
 if __name__ == '__main__' :
     ll=[]
@@ -105,36 +107,54 @@ if __name__ == '__main__' :
 
         best_list=AP_list.copy()
         best_list.sort()
-        best_five=best_list[-5:]
-        worst_five=best_list[:5]
+        best_=best_list.copy()
+        best_.reverse()
+        worst_=best_list.copy()
         print("best list:",AP_list.index(best_list[-100]))
 
-        index=AP_list.index(best_five[0])
+        #index=AP_list.index(best_[0])
         iter_best=0
         index_best=[]
-        while len(index_best)<5:
-            for val in AP_list:
-                if val==best_five[iter_best] and AP_list.index(val) not in index_best:
-                    print("yay")
-                    index_best.append(AP_list.index(val))
+        class_best=[]
+        while len(index_best)<5 and iter_best<len(best_):
+            for val_idx in range(len(AP_list)):
+                #print(iter_best)
+                if AP_list[val_idx]==best_[iter_best]:
+                    if val_idx not in index_best and files[val_idx][1] not in class_best:
+                        print("yay")
+                        index_best.append(val_idx)
+                        class_best.append(files[val_idx][1])
+                        break
                     iter_best+=1
-                    break
-                elif val==best_five[iter_best]:
+                """elif val==best_five[iter_best]:
                     index_best.append(AP_list.index(val)+iter_best)
                     iter_best+=1
-                    break
+                    break"""
         print("WE DID IT:",index_best)
 
-        the_best_idx = sim_idx[index, :k+1]
-        index2=AP_list.index(worst_five[4])
-        the_worst_idx = sim_idx[index2, :k+1]
+        #the_best_idx = sim_idx[index, :k+1]
+        #index2=AP_list.index(worst_five[4])
+        iter_worst=0
+        index_worst=[]
+        class_worst=[]
+        while len(index_worst)<5 and iter_worst<len(worst_):
+            for val_idx in range(len(AP_list)):
+                #print(iter_best)
+                if AP_list[val_idx]==worst_[iter_worst]:
+                    if val_idx not in index_worst and files[val_idx][1] not in class_worst:
+                        print("yay")
+                        index_worst.append(val_idx)
+                        class_worst.append(files[val_idx][1])
+                        break
+                    iter_worst+=1
+        #the_worst_idx = sim_idx[index2, :k+1]
 
         fig, ax = plt.subplots(5,11)
         w = 0
         #val_list=[]
-        for j in range(len(best_five)):
+        for j in range(5):
             #index=AP_list.index(best_five[j])
-            index=index_best[j]
+            index=index_worst[j]
             #print(index)
             the_best_idx=sim_idx[index,:11]
             for i, idx in enumerate(the_best_idx):        
