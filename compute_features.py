@@ -11,7 +11,7 @@ import os
 # data_dir = '/hd_data/Paris/'
 # image_dir = os.path.join(data_dir, 'paris')
 # val_file = 'data/val_paris.txt'
-DATASET = 'simple1k'
+DATASET = 'VOC_val'
 MODEL = 'dinov2'
 data_dir = 'simple1K/simple1K/'
 data_dir = 'VOC_val/VOC_val/'
