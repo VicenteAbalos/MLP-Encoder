@@ -55,7 +55,7 @@ def mean_recall(recall):
     return vector
 #
 
-DATASETS = ['simple1k']
+DATASETS = ['simple1k','VOC_val']
 MODELS = ['resnet34', 'resnet18', 'dinov2', 'clip']
 
 for DATASET in DATASETS:
@@ -178,5 +178,13 @@ for DATASET in DATASETS:
                 ax[0,0].patch.set(lw=6, ec='b')
                 ax[0,0].set_axis_on()            
                 plt.show()
-            recall_for_model[f"{DATASET}_{MODEL}"]={"RA": recall_avg, "mAP": mAP}
+            recall_for_model[f"{MODEL}"]={"RA": recall_avg, "mAP": mAP}
     print_recall(recall_for_model)
+    for i in recall_for_model.keys():
+        print(i,recall_for_model[i]["RA"])
+        plt.plot(recall_for_model[i]["RA"],label=i,marker="o")
+    plt.xlabel("recall")
+    plt.ylabel("precision")
+    plt.legend(recall_for_model.keys())
+    plt.title(MODEL)
+    plt.show()
