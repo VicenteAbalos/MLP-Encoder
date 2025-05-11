@@ -189,7 +189,8 @@ for DATASET in DATASETS:
     print_recall(recall_for_model)
     for i in recall_for_model.keys():
         #print(i,recall_for_model[i]["RA"])
-        plt.plot(recall_for_model[i]["RA"],label=i,marker="o")
+        x=[0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+        plt.plot(x,recall_for_model[i]["RA"],label=i,marker="o")
     plt.xlabel("recall")
     plt.ylabel("precision")
     plt.legend(recall_for_model.keys())
