@@ -55,7 +55,7 @@ def mean_recall(recall):
     return vector
 #
 
-DATASETS = ['simple1k','VOC_val']
+DATASETS = ['simple1k','VOC_val','Paris_val']
 MODELS = ['resnet34', 'resnet18', 'dinov2', 'clip']
 
 for DATASET in DATASETS:
@@ -88,10 +88,10 @@ for DATASET in DATASETS:
             R_dict={}
             for j, row in enumerate(sim_idx):
                 val_list=[]
-                for i, idx in enumerate(row):        
-                    #print("i:",i,"idx:",idx)
+                for i, ridx in enumerate(row):        
+                    #print("i:",i,"idx:",ridx)
                     #filename = os.path.join(image_dir, files[idx][0])
-                    if files[idx][1]==files[row[0]][1]:
+                    if files[ridx][1]==files[row[0]][1]:
                         val_list.append(1)
                     else:
                         val_list.append(0)
@@ -161,7 +161,10 @@ for DATASET in DATASETS:
                     the_idx=sim_idx[index,:11]
                     for i, idx in enumerate(the_idx):        
                         #print("i:",i,"idx:",idx)
-                        filename = os.path.join(image_dir, files[idx][0])
+                        corrected_file=files[idx][0]
+                        if DATASET=='Paris_val':
+                            corrected_file=corrected_file.split("/")[1]
+                        filename = os.path.join(image_dir, corrected_file)
                         im = io.imread(filename)
                         im = transform.resize(im, (64,64)) 
                         ax[j,i].imshow(im)                 

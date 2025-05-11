@@ -11,10 +11,10 @@ import os
 # data_dir = '/hd_data/Paris/'
 # image_dir = os.path.join(data_dir, 'paris')
 # val_file = 'data/val_paris.txt'
-DATASET = 'VOC_val'
+DATASET = 'Paris_val'
 MODEL = 'dinov2'
-data_dir = 'simple1K/simple1K/'
-data_dir = 'VOC_val/VOC_val/'
+#data_dir = 'simple1K/simple1K/'
+data_dir = 'Paris_val/Paris_val/'
 image_dir = os.path.join(data_dir, 'images')
 list_of_images = os.path.join(data_dir, 'list_of_images.txt')
 if __name__ == '__main__':
@@ -58,7 +58,10 @@ if __name__ == '__main__':
         n_images = len(files)
         features = np.zeros((n_images, dim), dtype = np.float32)        
         for i, file in enumerate(files) :                
-            filename = os.path.join(image_dir, file[0])
+            corrected_file=file[0]
+            if DATASET=='Paris_val':
+                corrected_file=file[0].split("/")[1]
+            filename = os.path.join(image_dir, corrected_file)
             image = Image.open(filename).convert('RGB')
             image = preprocess(image).unsqueeze(0).to(device)
             features[i,:] = model(image).cpu()[0,:]
