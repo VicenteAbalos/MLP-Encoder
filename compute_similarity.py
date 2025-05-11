@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 import os
 
 # load the data for visualizing the results
-data_dir = 'simple1K/simple1K/'
+"""data_dir = 'simple1K/simple1K/'
 image_dir = os.path.join(data_dir, 'images')
-val_file = os.path.join(data_dir, 'list_of_images.txt')
+val_file = os.path.join(data_dir, 'list_of_images.txt')"""
 #
 
 #funcion del precision
@@ -61,6 +61,10 @@ MODELS = ['resnet34', 'resnet18', 'dinov2', 'clip']
 for DATASET in DATASETS:
     recall_for_model={}
     for MODEL in MODELS:
+        data_dir = f'{DATASET}/{DATASET}/'
+        image_dir = os.path.join(data_dir, 'images')
+        val_file = os.path.join(data_dir, 'list_of_images.txt')
+
         feat_file = os.path.join('data', 'feat_{}_{}.npy'.format(MODEL, DATASET))
         if __name__ == '__main__' :
             with open(val_file, "r+") as file: 
@@ -189,5 +193,5 @@ for DATASET in DATASETS:
     plt.xlabel("recall")
     plt.ylabel("precision")
     plt.legend(recall_for_model.keys())
-    plt.title(MODEL)
+    plt.title(DATASET)
     plt.show()
