@@ -155,7 +155,7 @@ for DATASET in DATASETS:
             #the_worst_idx = sim_idx[index2, :k+1]
             ll_index=[index_best,index_worst]
             for indx in ll_index:
-                fig, ax = plt.subplots(5,11)
+                fig, ax = plt.subplots(5,11, figsize=(9,6))
                 w = 0
                 #val_list=[]
                 for j in range(5):
@@ -184,6 +184,7 @@ for DATASET in DATASETS:
                 
                 ax[0,0].patch.set(lw=6, ec='b')
                 ax[0,0].set_axis_on()            
+                plt.tight_layout()
                 plt.show()
             recall_for_model[f"{MODEL}"]={"RA": recall_avg, "mAP": mAP}
     print_recall(recall_for_model)
