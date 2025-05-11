@@ -14,6 +14,7 @@ import os
 DATASET = 'simple1k'
 MODEL = 'dinov2'
 data_dir = 'simple1K/simple1K/'
+data_dir = 'VOC_val/VOC_val/'
 image_dir = os.path.join(data_dir, 'images')
 list_of_images = os.path.join(data_dir, 'list_of_images.txt')
 if __name__ == '__main__':
