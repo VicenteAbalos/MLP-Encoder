@@ -188,7 +188,7 @@ for DATASET in DATASETS:
             recall_for_model[f"{MODEL}"]={"RA": recall_avg, "mAP": mAP}
     print_recall(recall_for_model)
     for i in recall_for_model.keys():
-        print(i,recall_for_model[i]["RA"])
+        #print(i,recall_for_model[i]["RA"])
         plt.plot(recall_for_model[i]["RA"],label=i,marker="o")
     plt.xlabel("recall")
     plt.ylabel("precision")
